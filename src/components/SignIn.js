@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import GoogleSignInButton from "./GoogleSignInButton";
 import { signInWithEmailAndPassword } from "../firebase/functions";
 
-function SignIn() {
+function SignIn({ setGuest }) {
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -40,11 +40,10 @@ function SignIn() {
 
       <p>or</p>
       <GoogleSignInButton />
-
+      <button onClick={() => setGuest(true)}>Join as Guest</button>
       <p>
         {"Don't have an account?"} <Link to="SignUp">Sign up here</Link>
       </p>
-      <p>Forgot password?</p>
     </>
   );
 }
