@@ -1,12 +1,17 @@
-import firebase from "firebase/app";
-import { auth, GoogleAuthProvider } from "./init";
+import firebase from "firebase/app"; // should not import 2nd time -- fix it
+import { auth /*, GoogleAuthProvider */ } from "./init";
 
 export const getServerTimestamp = () => {
   return firebase.firestore.FieldValue.serverTimestamp();
 };
 
 export const signInWithGoogle = () => {
-  auth.signInWithPopup(GoogleAuthProvider);
+  const provider = new firebase.auth.GoogleAuthProvider();
+  try {
+    auth.signInWithPopup(provider);
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const signOut = () => {
