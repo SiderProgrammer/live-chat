@@ -1,9 +1,13 @@
 import { useRef, useState, useEffect } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { getServerTimestamp } from "../firebase/functions";
-import { auth, firestore, storage } from "../firebase/init";
+import { getServerTimestamp } from "../../firebase/functions";
+import { auth, firestore, storage } from "../../firebase/init";
 
-import ChatMessage from "./ChatMessage";
+import ChatMessage from "./message/ChatMessage";
+import { useToasts } from "react-toast-notifications";
+import "./ChatRoom.css";
+
+const FILE_TYPE_ERROR_MESSAGE = "Oops.. only graphic files are correct";
 
 function ChatRoom() {
   const messagesCollection = firestore.collection("messages");
@@ -12,6 +16,8 @@ function ChatRoom() {
 
   const bottom = useRef();
   const [formValue, setFormValue] = useState("");
+
+  const { addToast } = useToasts();
 
   useEffect(() => {
     bottom.current.scrollIntoView({ behaviour: "smooth" });
@@ -30,6 +36,7 @@ function ChatRoom() {
   };
 
   const sendMessage = async (e, content, type) => {
+    setFormValue("");
     e.preventDefault();
     await updateMessagesCollection(content, type);
     bottom.current.scrollIntoView({ behaviour: "smooth" });
@@ -41,8 +48,12 @@ function ChatRoom() {
     upload.on(
       "state_changed",
       null,
-      (err) => {
-        console.log("It is not image!" + err.message);
+      () => {
+        addToast(FILE_TYPE_ERROR_MESSAGE, {
+          appearance: "error",
+          autoDismiss: true,
+          //placement: "bottom-right",
+        });
       },
       async () => {
         const imgURL = await storage.ref("images").child(uid).getDownloadURL();
@@ -62,12 +73,25 @@ function ChatRoom() {
             value={formValue}
             onChange={(e) => setFormValue(e.target.value)}
             placeholder="type your message here"
+            maxLength="100"
           />
           <button type="submit" disabled={!formValue}>
             send
           </button>
         </form>
-        <input type="file" onChange={handleFileUpload} accept="image/*" />
+        <button
+          onClick={function () {
+            document.querySelector("#fileUpload").click();
+          }}
+        >
+          make this button an image
+        </button>
+        <input
+          type="file"
+          onChange={handleFileUpload}
+          id="fileUpload"
+          accept="image/*"
+        />
         <span ref={bottom}></span>
       </main>
     </>

@@ -1,15 +1,19 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import GoogleSignInButton from "./GoogleSignInButton";
-import { createUserWithEmailAndPassword } from "../firebase/functions";
-// import { useToasts } from "react-toast-notifications";
+import GoogleSignInButton from "../button/GoogleSignInButton";
+import { createUserWithEmailAndPassword } from "../../firebase/functions";
+import { useToasts } from "react-toast-notifications";
 
-// const LOGIN_IN_ERROR_MESSAGE = "Oops.. E-mail or password is incorrect :(";
+const INVALID_EMAIL_CODE = "auth/invalid-email";
+const INVALID_PASSWORD_LENGTH_CODE = "auth/weak-password";
 
 function SignUp() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmationRef = useRef();
+
+  const { addToast } = useToasts();
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -24,7 +28,18 @@ function SignUp() {
 
       // eslint-disable-next-line no-empty
     } catch (e) {
-      console.log(e);
+      if (e.code === INVALID_EMAIL_CODE) {
+        addToast(e.message, {
+          appearance: "error",
+          autoDismiss: true,
+        });
+      }
+      if (e.code === INVALID_PASSWORD_LENGTH_CODE) {
+        addToast(e.message, {
+          appearance: "error",
+          autoDismiss: true,
+        });
+      }
     }
   }
 

@@ -2,14 +2,15 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 import { BrowserRouter, Route } from "react-router-dom";
 
-import SignIn from "./components/SignIn";
-import SignUp from "./components/SignUp";
-import SignOutButton from "./components/SignOutButton";
-import ChatRoom from "./components/ChatRoom";
+import SignIn from "./components/signIn/SignIn";
+import SignUp from "./components/signUp/SignUp";
+import SignOutButton from "./components/button/SignOutButton";
+import ChatRoom from "./components/chatRoom/ChatRoom";
 
 import { auth } from "./firebase/init";
 
 import { ToastProvider } from "react-toast-notifications";
+import "./App.css";
 function App() {
   const [user] = useAuthState(auth);
 
@@ -21,17 +22,17 @@ function App() {
       </header>
 
       <section>
-        {user ? (
-          <ChatRoom />
-        ) : (
-          <BrowserRouter>
-            <ToastProvider>
+        <ToastProvider>
+          {user ? (
+            <ChatRoom />
+          ) : (
+            <BrowserRouter>
               <Route path="/" exact component={SignIn} />
 
               <Route path="/SignUp" exact component={SignUp} />
-            </ToastProvider>
-          </BrowserRouter>
-        )}
+            </BrowserRouter>
+          )}
+        </ToastProvider>
       </section>
     </div>
   );

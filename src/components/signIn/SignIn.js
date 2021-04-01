@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import GoogleSignInButton from "./GoogleSignInButton";
-import { signInWithEmailAndPassword } from "../firebase/functions";
+import GoogleSignInButton from "../button/GoogleSignInButton";
+import { signInWithEmailAndPassword } from "../../firebase/functions";
 import { useToasts } from "react-toast-notifications";
 
 const LOGIN_IN_ERROR_MESSAGE = "Oops.. E-mail or password is incorrect :(";
