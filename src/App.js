@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { BrowserRouter, Route } from "react-router-dom";
@@ -10,27 +9,27 @@ import ChatRoom from "./components/ChatRoom";
 
 import { auth } from "./firebase/init";
 
+import { ToastProvider } from "react-toast-notifications";
 function App() {
   const [user] = useAuthState(auth);
-  const [isGuest, setGuest] = useState(false);
+
   return (
     <div className="App">
       <header>
         <h1>Live chat</h1>
-        {(user || isGuest) && <SignOutButton />}
+        {user && <SignOutButton />}
       </header>
 
       <section>
-        {user || isGuest ? (
+        {user ? (
           <ChatRoom />
         ) : (
           <BrowserRouter>
-            <Route path="/" exact>
-              <SignIn setGuest={setGuest} />{" "}
-              {/*could use withRouter to not clear match,loc,his props*/}
-            </Route>
+            <ToastProvider>
+              <Route path="/" exact component={SignIn} />
 
-            <Route path="/SignUp" exact component={SignUp} />
+              <Route path="/SignUp" exact component={SignUp} />
+            </ToastProvider>
           </BrowserRouter>
         )}
       </section>

@@ -2,18 +2,28 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import GoogleSignInButton from "./GoogleSignInButton";
 import { signInWithEmailAndPassword } from "../firebase/functions";
+import { useToasts } from "react-toast-notifications";
 
-function SignIn({ setGuest }) {
+const LOGIN_IN_ERROR_MESSAGE = "Oops.. E-mail or password is incorrect :(";
+
+function SignIn() {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  const handleSubmit = (e) => {
+  const { addToast } = useToasts();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    signInWithEmailAndPassword(
+    await signInWithEmailAndPassword(
       emailRef.current.value,
       passwordRef.current.value
-    );
+    ).catch(() => {
+      addToast(LOGIN_IN_ERROR_MESSAGE, {
+        appearance: "error",
+        autoDismiss: true,
+      });
+    });
   };
   return (
     <>
@@ -40,7 +50,7 @@ function SignIn({ setGuest }) {
 
       <p>or</p>
       <GoogleSignInButton />
-      <button onClick={() => setGuest(true)}>Join as Guest</button>
+
       <p>
         {"Don't have an account?"} <Link to="SignUp">Sign up here</Link>
       </p>

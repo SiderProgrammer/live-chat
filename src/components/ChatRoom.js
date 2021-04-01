@@ -16,12 +16,9 @@ function ChatRoom() {
   useEffect(() => {
     bottom.current.scrollIntoView({ behaviour: "smooth" });
   }, [messages]);
-  let uid, photoURL;
 
-  if (auth.currentUser) {
-    uid = auth.currentUser.uid;
-    photoURL = auth.currentUser.photoURL;
-  }
+  const { uid, photoURL } = auth.currentUser;
+
   const updateMessagesCollection = (content, type) => {
     return messagesCollection.add({
       content,
