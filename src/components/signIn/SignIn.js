@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import GoogleSignInButton from "../button/GoogleSignInButton";
+import GoogleSignInButton from "./GoogleSignInButton";
 import { signInWithEmailAndPassword } from "../../firebase/functions";
 import { useToasts } from "react-toast-notifications";
 

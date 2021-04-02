@@ -4,7 +4,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 import SignIn from "./components/signIn/SignIn";
 import SignUp from "./components/signUp/SignUp";
-import SignOutButton from "./components/button/SignOutButton";
+import SignOutButton from "./components/SignOutButton";
 import ChatRoom from "./components/chatRoom/ChatRoom";
 
 import { auth } from "./firebase/init";

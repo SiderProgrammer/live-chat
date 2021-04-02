@@ -1,8 +1,10 @@
 import { useRef, useState, useEffect } from "react";
+import { BiSend } from "react-icons/bi";
+import { BsFillImageFill } from "react-icons/bs";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { getServerTimestamp } from "../../firebase/functions";
 import { auth, firestore, storage } from "../../firebase/init";
-
+import ScrollToBottomButton from "./ScrollToBottomButton";
 import ChatMessage from "./message/ChatMessage";
 import { useToasts } from "react-toast-notifications";
 import "./ChatRoom.css";
@@ -16,12 +18,30 @@ function ChatRoom() {
 
   const bottom = useRef();
   const [formValue, setFormValue] = useState("");
+  const [atBottom, setAtBottom] = useState(true);
 
   const { addToast } = useToasts();
 
-  useEffect(() => {
+  const html = document.querySelector("html");
+
+  function handleScroll() {
+    if (html.scrollHeight - html.scrollTop - 300 > html.clientHeight) {
+      setAtBottom(false);
+    } else {
+      setAtBottom(true);
+    }
+  }
+  function scrollToBottom() {
     bottom.current.scrollIntoView({ behaviour: "smooth" });
+  }
+  useEffect(() => {
+    scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const { uid, photoURL } = auth.currentUser;
 
@@ -64,6 +84,7 @@ function ChatRoom() {
 
   return (
     <>
+      {!atBottom && <ScrollToBottomButton scrollToBottom={scrollToBottom} />}
       <main>
         chat room
         {messages &&
@@ -76,16 +97,14 @@ function ChatRoom() {
             maxLength="100"
           />
           <button type="submit" disabled={!formValue}>
-            send
+            <BiSend />
           </button>
         </form>
-        <button
+        <BsFillImageFill
           onClick={function () {
             document.querySelector("#fileUpload").click();
           }}
-        >
-          make this button an image
-        </button>
+        ></BsFillImageFill>
         <input
           type="file"
           onChange={handleFileUpload}
