@@ -7,6 +7,7 @@ import { auth, firestore, storage } from "../../firebase/init";
 import ScrollToBottomButton from "./ScrollToBottomButton";
 import ChatMessage from "./message/ChatMessage";
 import { useToasts } from "react-toast-notifications";
+import { ChatWrapper } from "../styles/Main";
 import "./ChatRoom.css";
 
 const FILE_TYPE_ERROR_MESSAGE = "Oops.. only graphic files are correct";
@@ -85,7 +86,7 @@ function ChatRoom() {
   return (
     <>
       {!atBottom && <ScrollToBottomButton scrollToBottom={scrollToBottom} />}
-      <main>
+      <ChatWrapper>
         chat room
         {messages &&
           messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
@@ -112,7 +113,7 @@ function ChatRoom() {
           accept="image/*"
         />
         <span ref={bottom}></span>
-      </main>
+      </ChatWrapper>
     </>
   );
 }

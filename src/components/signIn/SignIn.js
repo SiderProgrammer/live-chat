@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import GoogleSignInButton from "./GoogleSignInButton";
 import { signInWithEmailAndPassword } from "../../firebase/functions";
 import { useToasts } from "react-toast-notifications";
+import { FormButton } from "../button/style";
+import { AuthForm } from "../form/style";
+import { AccountParagraph } from "../styles/Paragraph";
 
 const LOGIN_IN_ERROR_MESSAGE = "Oops.. E-mail or password is incorrect :(";
 
@@ -27,33 +30,37 @@ function SignIn() {
   };
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="userEmail">Email:</label>
-        <input
-          type="email"
-          name="userEmail"
-          id="userEmail"
-          ref={emailRef}
-          placeholder="Your email"
-        />
+      <AuthForm onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="userEmail">Email:</label>
+          <input
+            type="email"
+            name="userEmail"
+            id="userEmail"
+            ref={emailRef}
+            placeholder="Your email"
+          />
+        </div>
 
-        <label htmlFor="userPassword"> Password:</label>
-        <input
-          type="password"
-          name="userPassword"
-          id="userPassword"
-          ref={passwordRef}
-          placeholder="Your password"
-        />
-        <button type="submit"> Sign in</button>
-      </form>
+        <div>
+          <label htmlFor="userPassword"> Password:</label>
+          <input
+            type="password"
+            name="userPassword"
+            id="userPassword"
+            ref={passwordRef}
+            placeholder="Your password"
+          />
+        </div>
+        <FormButton type="submit"> Sign in</FormButton>
+      </AuthForm>
 
       <p>or</p>
       <GoogleSignInButton />
 
-      <p>
+      <AccountParagraph>
         {"Don't have an account?"} <Link to="SignUp">Sign up here</Link>
-      </p>
+      </AccountParagraph>
     </>
   );
 }

@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import GoogleSignInButton from "../signIn/GoogleSignInButton";
 import { createUserWithEmailAndPassword } from "../../firebase/functions";
 import { useToasts } from "react-toast-notifications";
-
+import { FormButton } from "../button/style";
+import { AuthForm } from "../form/style";
+import { AccountParagraph } from "../styles/Paragraph";
 const INVALID_EMAIL_CODE = "auth/invalid-email";
 const INVALID_PASSWORD_LENGTH_CODE = "auth/weak-password";
 
@@ -45,34 +47,44 @@ function SignUp() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="userEmail">Email:</label>
-        <input type="email" ref={emailRef} placeholder="Your email" required />
+      <AuthForm onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="userEmail">Email:</label>
+          <input
+            type="email"
+            ref={emailRef}
+            placeholder="Your email"
+            required
+          />
+        </div>
 
-        <label htmlFor="userPassword"> Password:</label>
-        <input
-          type="password"
-          ref={passwordRef}
-          placeholder="Your password"
-          required
-        />
+        <div>
+          <label htmlFor="userPassword"> Password:</label>
+          <input
+            type="password"
+            ref={passwordRef}
+            placeholder="Your password"
+            required
+          />
+        </div>
 
-        <label>Password Confirmation</label>
-        <input
-          type="password"
-          ref={passwordConfirmationRef}
-          required
-          placeholder="Repeat your password"
-        />
-
-        <button type="submit"> Sign Up</button>
-      </form>
+        <div>
+          <label>Password Confirmation</label>
+          <input
+            type="password"
+            ref={passwordConfirmationRef}
+            required
+            placeholder="Repeat your password"
+          />
+        </div>
+        <FormButton type="submit"> Sign Up</FormButton>
+      </AuthForm>
       <p>or</p>
       <GoogleSignInButton />
-      <p>
+      <AccountParagraph>
         Already have an account?
         <Link to="/">Sign in here</Link>{" "}
-      </p>
+      </AccountParagraph>
     </>
   );
 }
