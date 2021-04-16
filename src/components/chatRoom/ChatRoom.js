@@ -8,13 +8,29 @@ import ScrollToBottomButton from "./ScrollToBottomButton";
 import ChatMessage from "./message/ChatMessage";
 import { useToasts } from "react-toast-notifications";
 import { ChatWrapper } from "../styles/Main";
+import { SendForm } from "../styles/Forms";
 import "./ChatRoom.css";
 
 const FILE_TYPE_ERROR_MESSAGE = "Oops.. only graphic files are correct";
 
 function ChatRoom() {
   const messagesCollection = firestore.collection("messages");
-  const query = messagesCollection.orderBy("createdAt"); //.limit(30);
+  //let messagesSkipAmount = 0;
+
+  // const getMessages = () => {
+  //   const query = messagesCollection
+  //     .orderBy("createdAt")
+  //     // .startAt(messagesSkipAmount)
+  //     .limit(10 + messagesSkipAmount); //;
+
+  //   const [messages] = useCollectionData(query, { idField: "id" });
+  //   return messages;
+  // };
+
+  // let messages = getMessages();
+
+  const query = messagesCollection.orderBy("createdAt");
+
   const [messages] = useCollectionData(query, { idField: "id" });
 
   const bottom = useRef();
@@ -30,6 +46,10 @@ function ChatRoom() {
       setAtBottom(false);
     } else {
       setAtBottom(true);
+      // messagesSkipAmount = 20;
+      // messages = getMessages();
+
+      // console.log(messages);
     }
   }
   function scrollToBottom() {
@@ -42,7 +62,7 @@ function ChatRoom() {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [atBottom, setAtBottom]);
 
   const { uid, photoURL } = auth.currentUser;
 
@@ -85,27 +105,29 @@ function ChatRoom() {
 
   return (
     <>
-      {!atBottom && <ScrollToBottomButton scrollToBottom={scrollToBottom} />}
       <ChatWrapper>
-        chat room
+        {!atBottom && <ScrollToBottomButton scrollToBottom={scrollToBottom} />}
+
         {messages &&
           messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
-        <form onSubmit={(e) => sendMessage(e, formValue, "text")}>
+        <SendForm onSubmit={(e) => sendMessage(e, formValue, "text")}>
           <input
             value={formValue}
             onChange={(e) => setFormValue(e.target.value)}
             placeholder="type your message here"
             maxLength="100"
           />
+
           <button type="submit" disabled={!formValue}>
             <BiSend />
           </button>
-        </form>
-        <BsFillImageFill
-          onClick={function () {
-            document.querySelector("#fileUpload").click();
-          }}
-        ></BsFillImageFill>
+
+          <BsFillImageFill
+            onClick={function () {
+              document.querySelector("#fileUpload").click();
+            }}
+          ></BsFillImageFill>
+        </SendForm>
         <input
           type="file"
           onChange={handleFileUpload}

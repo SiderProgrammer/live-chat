@@ -27,6 +27,17 @@ export const FormButton = styled.button`
   border: 2px solid black;
   cursor: pointer;
   padding: var(--form-interactive-elements-padding);
+
+  &:hover {
+    
+      animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+      perspective: 1000px;
+    }
+    
+   
+  }
 `;
 
 // color: ${(props) => props.theme.fc};

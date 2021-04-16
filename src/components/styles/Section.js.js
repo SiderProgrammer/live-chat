@@ -5,4 +5,5 @@ export const AuthSection = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: forestgreen;
 `;

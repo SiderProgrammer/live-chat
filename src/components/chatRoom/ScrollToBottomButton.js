@@ -1,9 +1,9 @@
-import "./ScrollToBottom.css";
+import { ScrollButton } from "../styles/Buttons";
 function ScrollToBottomButton({ scrollToBottom }) {
   return (
-    <button className="scrollToBottomButton" onClick={scrollToBottom}>
+    <ScrollButton className="scrollToBottomButton" onClick={scrollToBottom}>
       Scroll To bottom
-    </button>
+    </ScrollButton>
   );
 }
 

@@ -14,6 +14,7 @@ import "./App.css";
 import { GlobalStyles } from "./components/globals/style";
 import { AuthSection } from "./components/styles/Section.js";
 import { Wrapper } from "./components/styles/Div";
+import { PageHeader } from "./components/styles/Header";
 function App() {
   const [user] = useAuthState(auth);
 
@@ -21,15 +22,26 @@ function App() {
     <>
       <GlobalStyles />
       <Wrapper>
-        <header>
-          <h1>Live chat</h1>
-          {user && <SignOutButton />}
-        </header>
+        <PageHeader>
+          {user ? <h1>Live chat room </h1> : <h1>Live chat main page</h1>}
+        </PageHeader>
 
         <AuthSection>
           <ToastProvider>
             {user ? (
-              <ChatRoom />
+              <>
+                <div
+                  style={{
+                    padding: "20px",
+                    background: "white",
+                    border: "3px solid mediumseagreen",
+                  }}
+                >
+                  <SignOutButton />
+                </div>
+
+                <ChatRoom />
+              </>
             ) : (
               <BrowserRouter>
                 <Route path="/" exact component={SignIn} />
