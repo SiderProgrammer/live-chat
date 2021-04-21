@@ -1,10 +1,10 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import GoogleSignInButton from "../signIn/GoogleSignInButton";
+import GoogleSignInButton from "../GoogleSignInButton";
 import { createUserWithEmailAndPassword } from "../../firebase/functions";
 import { useToasts } from "react-toast-notifications";
-import { FormButton } from "../button/style";
-import { AuthForm } from "../form/style";
+import { FormButton } from "../styles/Buttons";
+import { AuthForm } from "../styles/Forms";
 import { AccountParagraph } from "../styles/Paragraph";
 const INVALID_EMAIL_CODE = "auth/invalid-email";
 const INVALID_PASSWORD_LENGTH_CODE = "auth/weak-password";

@@ -9,9 +9,8 @@ export const signInWithGoogle = () => {
   const provider = new firebase.auth.GoogleAuthProvider();
   try {
     auth.signInWithPopup(provider);
-  } catch (e) {
-    console.log(e);
-  }
+    // eslint-disable-next-line no-empty
+  } catch {}
 };
 
 export const signOut = () => {

@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { BiSend } from "react-icons/bi";
 import { BsFillImageFill } from "react-icons/bs";
+import { GrEmoji } from "react-icons/gr";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { getServerTimestamp } from "../../firebase/functions";
 import { auth, firestore, storage } from "../../firebase/init";
@@ -9,7 +10,8 @@ import ChatMessage from "./message/ChatMessage";
 import { useToasts } from "react-toast-notifications";
 import { ChatWrapper } from "../styles/Main";
 import { SendForm } from "../styles/Forms";
-import "./ChatRoom.css";
+import { FileInput } from "../styles/Input";
+import StyledPicker from "./Picker";
 
 const FILE_TYPE_ERROR_MESSAGE = "Oops.. only graphic files are correct";
 
@@ -36,6 +38,7 @@ function ChatRoom() {
   const bottom = useRef();
   const [formValue, setFormValue] = useState("");
   const [atBottom, setAtBottom] = useState(true);
+  const [isPickerVisible, setPickervisibility] = useState(false);
 
   const { addToast } = useToasts();
 
@@ -54,6 +57,11 @@ function ChatRoom() {
   }
   function scrollToBottom() {
     bottom.current.scrollIntoView({ behaviour: "smooth" });
+  }
+
+  function handlePicker() {
+    isPickerVisible ? setPickervisibility(false) : setPickervisibility(true);
+    setTimeout(() => scrollToBottom(), 1);
   }
   useEffect(() => {
     scrollToBottom();
@@ -77,9 +85,11 @@ function ChatRoom() {
   };
 
   const sendMessage = async (e, content, type) => {
+    setPickervisibility(false);
     setFormValue("");
     e.preventDefault();
     await updateMessagesCollection(content, type);
+
     bottom.current.scrollIntoView({ behaviour: "smooth" });
   };
 
@@ -127,13 +137,20 @@ function ChatRoom() {
               document.querySelector("#fileUpload").click();
             }}
           ></BsFillImageFill>
+
+          <GrEmoji onClick={handlePicker} />
         </SendForm>
-        <input
+
+        <FileInput
           type="file"
           onChange={handleFileUpload}
           id="fileUpload"
           accept="image/*"
         />
+
+        {isPickerVisible && (
+          <StyledPicker onSelect={(e) => setFormValue(formValue + e.native)} />
+        )}
         <span ref={bottom}></span>
       </ChatWrapper>
     </>
