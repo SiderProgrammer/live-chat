@@ -1,7 +1,8 @@
 import { signOut } from "../firebase/functions";
+import { GoogleButton } from "./styles/Buttons";
 
 function SignOutButton() {
-  return <button onClick={signOut}>Sign Out</button>;
+  return <GoogleButton onClick={signOut}>Sign Out</GoogleButton>;
 }
 
 export default SignOutButton;
